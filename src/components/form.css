@@ -1,0 +1,16 @@
+.logo{
+  width: 200px;
+  height: 110px;
+}
+.form-group{
+  display: flex;
+  flex-direction: column;
+}
+.wrapperForm{
+  padding: 10px;
+}
+input{
+  width: 200px;
+}
+
+
