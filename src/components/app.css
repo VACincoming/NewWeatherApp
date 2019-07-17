@@ -1,0 +1,10 @@
+.mainWrapper{
+  height: 100vh;
+  background: #8397A0;
+}
+canvas {
+  display: block;
+  position: absolute;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
