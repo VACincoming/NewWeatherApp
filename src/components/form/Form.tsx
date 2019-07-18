@@ -1,5 +1,5 @@
 import React from "react";
-import WeatherLogo from '../assets/WeatherLogo.png'
+import WeatherLogo from '../../assets/WeatherLogo.png'
 import "./form.css"
 import { Row, Col} from 'react-bootstrap';
 
