@@ -17,6 +17,10 @@ interface IState {
     description: string,
     date: string | Date | undefined,
     id: number,
+    icon: string | undefined,
+    temperature: number | undefined,
+    pressure: number | undefined,
+    humidity: number | undefined
   }
 
 
@@ -42,9 +46,13 @@ export default class App extends React.Component<any,IState> {
     const data = await api_call.json();
 
     const res = data.list.map((el:any) => ({
-      date: moment(el.dt_txt).format('DD/MM hh:mm'),
+      date: moment(el.dt_txt).format('l LT'),
       description: el.weather[0].description,
-      id: el.dt
+      id: el.dt,
+      icon: el.weather[0].icon,
+      temperature: Math.floor(el.main.temp),
+      pressure: Math.floor(el.main.pressure),
+      humidity: Math.floor(el.main.humidity)
     }))
     this.setState({
       allData: res
@@ -60,6 +68,10 @@ export default class App extends React.Component<any,IState> {
           date: '',
           description: '',
           id: 0,
+          icon: '',
+          temperature: 0,
+          pressure: 0,
+          humidity: 0
         }]
       });
     }
@@ -71,8 +83,6 @@ export default class App extends React.Component<any,IState> {
     })
   }
   public render(){
-    // const {loading} = this.state.loading;
-    // const weather = loading ? <Spinner/> : 
     return (
       <div>
         <Container className="mainWrapper">
@@ -81,7 +91,7 @@ export default class App extends React.Component<any,IState> {
               <Form getWeather={this.getWeather}/>
             </Col>
             <Col xl={{span:9}}>
-                <Weather />
+                <Weather allData={this.state.allData}/>
             </Col>
 
           </Row>

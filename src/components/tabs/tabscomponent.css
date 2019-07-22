@@ -1,0 +1,12 @@
+.table td{
+  vertical-align: middle;
+  text-align: center;
+  padding: 0;
+}
+
+.table td img{
+  height: 50px;
+}
+tr{
+  text-align: center;
+}

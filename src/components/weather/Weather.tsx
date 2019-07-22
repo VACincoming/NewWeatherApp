@@ -90,7 +90,11 @@ export default class Weather extends React.Component<any,WState>{
     })
     filterWeather(res)
   }
-  
+  componentDidUpdate(prevProps:any, prevState:WState){
+    if(this.props.allData.length !==0 && prevProps.allData !== this.props.allData){
+      this.filterWeather(this.props.allData);
+    }
+  }
   componentDidMount(){
     this.getInitWeather("Chernihiv", "ua", this.filterWeather);
   }
@@ -112,6 +116,7 @@ export default class Weather extends React.Component<any,WState>{
           arrayThirdDay = {arrayThirdDay}
           arrayFourDay={arrayFourDay}
           arrayFiveDay={arrayFiveDay}
+          loading = {loading}
         />
     return(
     <div>

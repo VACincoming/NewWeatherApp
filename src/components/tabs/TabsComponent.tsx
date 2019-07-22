@@ -2,15 +2,20 @@ import React from 'react'
 import { Tab, Table } from 'react-bootstrap';
 import Tabs from 'react-bootstrap/Tabs'
 import moment from 'moment'
+import Chart from '../chart/chart'
+import './tabscomponent.css'
 
 
+
+// const reactMetricsGraphics = require('react-metrics-graphics');
 interface Props {
   // allData: any,
   arrayToday: ItemOfData[],
   arraySecondDay: ItemOfData[],
   arrayThirdDay: ItemOfData[],
   arrayFourDay: ItemOfData[],
-  arrayFiveDay: ItemOfData[]
+  arrayFiveDay: ItemOfData[],
+  loading: boolean
 }
 interface ItemOfData {
   description: string,
@@ -22,8 +27,16 @@ interface ItemOfData {
   humidity: number | undefined
 }
 
+
+
 export default class TabsComponent extends React.Component<Props>{
   render(){
+    const { 
+      arrayToday,
+      arraySecondDay,
+      arrayThirdDay,
+      arrayFourDay,
+      arrayFiveDay } = this.props;
         return (
         <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example" >
           <Tab eventKey="today" title={moment(this.props.arrayToday[0].date).format('dddd')}>
@@ -52,7 +65,9 @@ export default class TabsComponent extends React.Component<Props>{
               }
               </tbody>
             </Table>
+            
         </Tab>
+
           <Tab eventKey="2 days" title={moment(this.props.arraySecondDay[0].date).format('dddd')}>
           <Table striped bordered hover>
               <thead>
@@ -78,7 +93,14 @@ export default class TabsComponent extends React.Component<Props>{
                 ))
               }
               </tbody>
+              
             </Table>
+            <Chart arrayToday={arrayToday} 
+                   arraySecondDay={arraySecondDay}
+                   arrayThirdDay = {arrayThirdDay}
+                   arrayFourDay={arrayFourDay}
+                   arrayFiveDay={arrayFiveDay}
+                   loading = {this.props.loading}/>
           </Tab>
           <Tab eventKey="3 days" title={moment(this.props.arrayThirdDay[0].date).format('dddd')}>
           <Table striped bordered hover>

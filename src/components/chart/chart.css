@@ -1,0 +1,10 @@
+.chart{
+  /* line-height: 30; */
+  height:350px;
+}
+.konvajs-content{
+  width: 1000px !important;
+}
+.konvajs-content canvas{
+  width: 100% !important;
+}
