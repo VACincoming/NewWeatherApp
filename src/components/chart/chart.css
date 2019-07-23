@@ -8,3 +8,6 @@
 .konvajs-content canvas{
   width: 100% !important;
 }
+.chart{
+  transition: width .5s, height .5s;
+}

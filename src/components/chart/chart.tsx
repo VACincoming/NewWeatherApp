@@ -1,21 +1,16 @@
-import {Bar} from 'react-chartjs-2';
 import React from 'react'
 import './chart.css'
 import moment from 'moment'
-import { Stage, Layer, Rect, Text, Star, Line, Circle } from 'react-konva';
-import Konva from 'konva';
-import {Spinner, OverlayTrigger, Tooltip, Button } from 'react-bootstrap'
-import { ReactComponent } from '*.svg';
 
 
 interface Props {
-  // allData: any,
-  arrayToday: ItemOfData[],
-  arraySecondDay: ItemOfData[],
-  arrayThirdDay: ItemOfData[],
-  arrayFourDay: ItemOfData[],
-  arrayFiveDay: ItemOfData[],
-  loading: boolean
+  arrayToday?: ItemOfData[],
+  arraySecondDay?: ItemOfData[],
+  arrayThirdDay?: ItemOfData[],
+  arrayFourDay?: ItemOfData[],
+  arrayFiveDay?: ItemOfData[],
+  loading?: boolean,
+  activeDay?: string | undefined
 }
 interface ItemOfData {
   description: string,
@@ -28,70 +23,74 @@ interface ItemOfData {
 }
 
 export default class Chart extends React.Component<Props, any>{
+  state = {
+    currentDay: []
+  }
+
+  componentDidUpdate(prevProps:any){
+    // if(this.props.arraySecondDay.length !== 0 && prevProps.arraySecondDay !== this.props.arraySecondDay){
+      if(this.props.arrayToday){
+        if(moment(this.props.arrayToday[0].date!).format('dddd') === this.props.activeDay){
+          this.draw(this.props.arrayToday);
+        }
+      }
+      if(this.props.arraySecondDay){
+        if(moment(this.props.arraySecondDay[0].date).format('dddd') === this.props.activeDay){
+          this.draw(this.props.arraySecondDay);
+        }
+      }
+      if(this.props.arrayThirdDay){
+        if(moment(this.props.arrayThirdDay[0].date).format('dddd') === this.props.activeDay){
+          this.draw(this.props.arrayThirdDay);
+        }
+      }
+      if(this.props.arrayFourDay){
+        if(moment(this.props.arrayFourDay[0].date).format('dddd') === this.props.activeDay){
+          this.draw(this.props.arrayFourDay);
+        }
+      }if(this.props.arrayFiveDay){
+        if(moment(this.props.arrayFiveDay[0].date).format('dddd') === this.props.activeDay){
+          this.draw(this.props.arrayFiveDay);
+        }
+      }
+    // }
+  }
+  draw(data:any) {
+    const canvas:any = this.refs.canvas;
+    if (canvas.getContext!) {
+    let ctx:any = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for(let i = 1;i<=10;i++){
+      ctx.font = "16px Courier"
+      ctx.fillText((10-i)*5, 0, i*24.5)
+      ctx.beginPath();
+      ctx.moveTo(0, i*25);
+      ctx.lineTo(1000, i*25);
+      ctx.closePath();
+      ctx.stroke();
+    }
+
+    data.forEach((el:any) => {
+      if(el.temperature < 0){
+        ctx.fillStyle = 'rgb(31, 120, 255)';
+        ctx.fillRect((data.indexOf(el)+0.4) * 100, 250, 50, (el.temperature*5));
+        
+      }else{
+      ctx.fillStyle = 'rgb(232, 227, 85)';
+      ctx.fillRect((data.indexOf(el)+0.4) * 100, 250, 50, -(el.temperature*5));
+      }
+      ctx.font = "14px Courier"
+      ctx.fillStyle = 'rgb(0, 0, 0)';
+      ctx.fillText((moment(el.date).format("LT")),(data.indexOf(el)+0.37)*100, 270)
+    });
+    }
+   
+  }
   render(){
-   const graphic = <Stage width={700} height={500}>
-   <Layer>
-    {this.props.arraySecondDay.map((element) =>
-   <Rect
-   key={element.id}
-     x={this.props.arraySecondDay.indexOf(element) * 70}
-     y={250}
-     width={50}
-     height={-(element.temperature! * 10)}
-     fill="orange"
-     shadowBlur={5}
-   ></Rect>
-    )}
- 
-   </Layer>
-</Stage>
     return(
       <div className="chart">
-        1231
-        {graphic}
+        <canvas id="tutorial" ref="canvas" width={800} height={300}></canvas>
       </div>
     )
   }
 }
-
-// const toolTip = this.props.arraySecondDay.map((element) =>
-// <OverlayTrigger
-//   key={element.id}
-//   placement='top'
-//   overlay = {
-//     <Tooltip id={element.id}>
-//       qweq
-//     </Tooltip>
-//   }
-// >
-//   <Rect
-//     x={this.props.arraySecondDay.indexOf(element) * 170}
-//     y={250}
-//     width={150}
-//     height={-(element.temperature! * 10)}
-//     fill="orange"
-//     shadowBlur={5}
-//   ></Rect>
-// </OverlayTrigger>
-// )
-// \
-
-
-
-
-{/* <Rect
-                x={20}
-                y={20}
-                width={50}
-                height={50}
-                fill='red'
-                shadowBlur={5}
-              />
-              <Rect
-                x={40}
-                y={40}
-                width={50}
-                height={50}
-                fill="red"
-                shadowBlur={5}
-              /> */}
