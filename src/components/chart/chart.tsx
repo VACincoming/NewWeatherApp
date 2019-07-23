@@ -56,16 +56,21 @@ export default class Chart extends React.Component<Props, any>{
     // }
   }
   draw(data:any) {
+    let maxTemp:any = []
+    data.forEach((el:any) => {
+        maxTemp.push(el.temperature);
+    });
+    console.log(Math.max(...maxTemp));
     const canvas:any = this.refs.canvas;
     if (canvas.getContext!) {
     let ctx:any = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for(let i = 1;i<=10;i++){
+    for(let i = 0;i<=Math.ceil((Math.max(...maxTemp))/5);i++){
       ctx.font = "16px Courier"
-      ctx.fillText((10-i)*5, 0, i*24.5)
+      ctx.fillText((i)*5, 0, 250-(i*25))
       ctx.beginPath();
-      ctx.moveTo(0, i*25);
-      ctx.lineTo(1000, i*25);
+      ctx.moveTo(0, 250-(i*25));
+      ctx.lineTo(1000, 250-(i*25));
       ctx.closePath();
       ctx.stroke();
     }
