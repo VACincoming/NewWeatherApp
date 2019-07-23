@@ -26,7 +26,13 @@ export default class Chart extends React.Component<Props, any>{
   state = {
     currentDay: []
   }
-
+  componentDidMount(){
+    if(this.props.arrayToday){
+      if(moment(this.props.arrayToday[0].date!).format('dddd') === this.props.activeDay){
+        this.draw(this.props.arrayToday);
+      }
+    }
+  }
   componentDidUpdate(prevProps:any){
     // if(this.props.arraySecondDay.length !== 0 && prevProps.arraySecondDay !== this.props.arraySecondDay){
       if(this.props.arrayToday){
@@ -55,6 +61,7 @@ export default class Chart extends React.Component<Props, any>{
       }
     // }
   }
+  alpha = 0.1;
   draw(data:any) {
     let maxTemp:any = []
     data.forEach((el:any) => {
@@ -65,7 +72,7 @@ export default class Chart extends React.Component<Props, any>{
     if (canvas.getContext!) {
     let ctx:any = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for(let i = 0;i<=Math.ceil((Math.max(...maxTemp))/5);i++){
+    for(let i = 0;i<=Math.floor((Math.max(...maxTemp))/5)+1;i++){
       ctx.font = "16px Courier"
       ctx.fillText((i)*5, 0, 250-(i*25))
       ctx.beginPath();
@@ -88,6 +95,10 @@ export default class Chart extends React.Component<Props, any>{
       ctx.fillStyle = 'rgb(0, 0, 0)';
       ctx.fillText((moment(el.date).format("LT")),(data.indexOf(el)+0.37)*100, 270)
     });
+    this.alpha+=.01;
+    ctx.globalAlpha = this.alpha;
+        if(this.alpha < 1)
+          setTimeout(() => this.draw(data),1000/60);
     }
    
   }
