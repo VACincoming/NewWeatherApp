@@ -3,7 +3,6 @@ import Form from './components/form/Form'
 import { Container, Row, Col } from 'react-bootstrap';
 import "./components/app.css"
 import moment from 'moment';
-// import {Spinner} from 'react-bootstrap'
 import Weather from './components/weather/Weather'
 
 const API_KEY:string = 'f5795a4d5f87e58a619ac306f9d0447d';
@@ -93,7 +92,6 @@ export default class App extends React.Component<any,IState> {
             <Col xl={{span:9}}>
                 <Weather allData={this.state.allData}/>
             </Col>
-
           </Row>
         </Container>
     </div>

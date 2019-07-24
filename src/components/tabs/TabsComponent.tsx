@@ -37,7 +37,6 @@ export default class TabsComponent extends React.Component<Props, State>{
     activeDay: moment(this.props.arrayToday[0].date).format('dddd')
   }
   changeActiveDay = (selectedTab:any) => {
-    console.log(selectedTab)
     this.setState({
       activeDay: selectedTab
     })
