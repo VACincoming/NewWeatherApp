@@ -70,7 +70,17 @@ export default class Chart extends React.Component<Props, any>{
   }
   draw(data:any) {
     if(this.oldDay !== data){
-      let temp:any = []
+      let allTemp:any =[];
+      let temp:any = [];
+      let minTemp = 0;
+      data.forEach((el:any) => {
+        allTemp.push(el.temperature);
+      })
+      if(Math.min(...allTemp)<0){
+        minTemp = Math.min(...allTemp)
+      } else minTemp = 0;
+      
+      console.log(minTemp);
       data.forEach((el:any) => {
         if(el.temperature >= 0){
           temp.push(el.temperature);
@@ -85,12 +95,12 @@ export default class Chart extends React.Component<Props, any>{
         data.forEach((el:any) => {
           ctx.font = "14px Courier";
           ctx.fillStyle = 'rgba(0, 0, 0, .7)';
-          ctx.fillText((moment(el.date).format("LT")),(data.indexOf(el)+0.37)*100, 270);
+          ctx.fillText((moment(el.date).format("LT")),(data.indexOf(el)+0.37)*100, 300);
         })
-        for(let i = 0;i<=Math.floor((Math.max(...temp))/5)+1;i++){
+        for(let i = -1;i<=Math.floor((Math.max(...temp))/5)+1;i++){
           ctx.font = "16px Courier"
           ctx.fillStyle = 'rgba(0, 0, 0, .7)';
-          ctx.fillText((i)*5, 0, 250-(i*25))
+          ctx.fillText( ( ((i)*5)+`C`), 0, 250-(i*25) )
           ctx.beginPath();
           ctx.moveTo(0, 250-(i*25));
           ctx.lineTo(1000, 250-(i*25)); // (temp.length+0.4)*100
@@ -98,19 +108,23 @@ export default class Chart extends React.Component<Props, any>{
           ctx.closePath();
           ctx.stroke();
         }
+        let my_gradient = ctx.createLinearGradient(0, 0, 0, 170);
         data.forEach((el:any) => {
           if(el.temperature < 0){
             for(let i=0; i<=-(el.temperature*5);i++){
               if((el.temperature*5)<-i){
-                ctx.fillStyle = '#01BBFE'
+                my_gradient.addColorStop(0.3, "#FE4401");
+                my_gradient.addColorStop(0.6, "#FE2F2F");
+                my_gradient.addColorStop(1, "#FEC301");
+                ctx.fillStyle = my_gradient;
                 setTimeout(() =>
-                  ctx.fillRect((data.indexOf(el)+0.4) * 100, 250, 50, -i)
+                  ctx.fillRect((data.indexOf(el)+0.4) * 100, 250, 50, i)
                 ,500);
               }
             }
           }
           else{
-            let my_gradient = ctx.createLinearGradient(0, 0, 0, 170);
+            
             for(let i=0; i<=(el.temperature*5);i++){
               if((el.temperature*5)>i){
                 my_gradient.addColorStop(0.3, "#FE4401");
