@@ -31,6 +31,7 @@ export default class Chart extends React.Component<Props, any>{
     if(this.props.arrayToday){
       if(moment(this.props.arrayToday[0].date!).format('dddd') === this.props.activeDay){
         this.draw(this.props.arrayToday);
+        this.oldDay = this.props.arrayToday;
       }
     }
   }
