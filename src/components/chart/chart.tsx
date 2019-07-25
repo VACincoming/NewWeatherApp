@@ -79,9 +79,16 @@ export default class Chart extends React.Component<Props, any>{
       })
       if(Math.min(...allTemp)<0){
         minTemp = Math.min(...allTemp)
+        if(minTemp >=-5) minTemp = -1
+        if(minTemp <=-5 && minTemp >= -10) minTemp = -2
+        if(minTemp <=-10 && minTemp >= -15) minTemp = -3
+        if(minTemp <=-15 && minTemp >= -20) minTemp = -4
+        if(minTemp <=-20 && minTemp >= -25) minTemp = -5
+        if(minTemp <=-25 && minTemp >= -30) minTemp = -6
+        if(minTemp <=-30 && minTemp >= -35) minTemp = -7
+        if(minTemp <=-40 && minTemp >= -40) minTemp = -8
       } else minTemp = 0;
       
-      console.log(minTemp);
       data.forEach((el:any) => {
         if(el.temperature >= 0){
           temp.push(el.temperature);
@@ -96,15 +103,16 @@ export default class Chart extends React.Component<Props, any>{
         data.forEach((el:any) => {
           ctx.font = "14px Courier";
           ctx.fillStyle = 'rgba(0, 0, 0, .7)';
-          ctx.fillText((moment(el.date).format("LT")),(data.indexOf(el)+0.37)*100, 300);
+          ctx.fillText((moment(el.date).format("LT")),(data.indexOf(el)+0.37)*100, 240-(minTemp*20));
         })
-        for(let i = -1;i<=Math.floor((Math.max(...temp))/5)+1;i++){
+
+        for(let i = minTemp;i<=Math.floor((Math.max(...temp))/5)+1;i++){
           ctx.font = "16px Courier"
           ctx.fillStyle = 'rgba(0, 0, 0, .7)';
-          ctx.fillText( ( ((i)*5)+`C`), 0, 250-(i*25) )
+          ctx.fillText( ( ((i)*5)+`C`), 0, 220-(i*25) )
           ctx.beginPath();
-          ctx.moveTo(0, 250-(i*25));
-          ctx.lineTo(1000, 250-(i*25)); // (temp.length+0.4)*100
+          ctx.moveTo(0, 220-(i*25));
+          ctx.lineTo(1000, 220-(i*25)); // (temp.length+0.4)*100
           ctx.lineWidth = .1;
           ctx.closePath();
           ctx.stroke();
@@ -119,7 +127,7 @@ export default class Chart extends React.Component<Props, any>{
                 my_gradient.addColorStop(1, "#FEC301");
                 ctx.fillStyle = my_gradient;
                 setTimeout(() =>
-                  ctx.fillRect((data.indexOf(el)+0.4) * 100, 250, 50, i)
+                  ctx.fillRect((data.indexOf(el)+0.4) * 100, 220, 50, i)
                 ,500);
               }
             }
@@ -133,7 +141,7 @@ export default class Chart extends React.Component<Props, any>{
                 my_gradient.addColorStop(1, "#FEC301");
                 ctx.fillStyle = my_gradient;
                 setTimeout(() =>
-                  ctx.fillRect((data.indexOf(el)+0.4) * 100, 250, 50, -i)
+                  ctx.fillRect((data.indexOf(el)+0.4) * 100, 220, 50, -i)
                 ,500);
               }
             }    
@@ -145,7 +153,7 @@ export default class Chart extends React.Component<Props, any>{
   render(){
     return(
       <div className="chart">
-        <canvas id="tutorial" ref="canvas" width={800} height={300}></canvas>
+        <canvas id="tutorial" ref="canvas" width={800} height={380}></canvas>
       </div>
     )
   }

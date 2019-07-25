@@ -76,6 +76,9 @@ export default class Weather extends React.Component<any,WState>{
       throw new Error(`Could not fetch http://api.openweathermap.org/data/2.5/forecast?q=Chernihiv,ua&appid=${API_KEY}&units=metric , received ${api_call.status}` )
     }
     const data = await api_call.json();
+    console.log(data);
+    const lat = data.city.coord.lat
+    const lon = data.city.coord.lon
     const res = await data.list.map((el:any) => ({
       date: moment(el.dt_txt).format('l LT'),
       description: el.weather[0].description,
@@ -83,7 +86,7 @@ export default class Weather extends React.Component<any,WState>{
       icon: el.weather[0].icon,
       temperature: Math.floor(el.main.temp),
       pressure: Math.floor(el.main.pressure),
-      humidity: Math.floor(el.main.humidity)
+      humidity: Math.floor(el.main.humidity),
     }))
     this.setState({
       allData: res

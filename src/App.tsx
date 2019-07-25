@@ -4,12 +4,16 @@ import { Container, Row, Col } from 'react-bootstrap';
 import "./components/app.css"
 import moment from 'moment';
 import Weather from './components/weather/Weather'
+import Particles from 'react-particles-js'
+import Map from './components/map/Map'
 
 const API_KEY:string = 'f5795a4d5f87e58a619ac306f9d0447d';
 
 interface IState {
   allData?: ItemOfData[],
-  loading?: boolean
+  loading?: boolean,
+  lat?: any,
+  lon?: any
   }
 
   interface ItemOfData {
@@ -27,6 +31,8 @@ export default class App extends React.Component<any,IState> {
   state: any = {
     allData: [],
     loading: true,
+    lat: 0,
+    lon: 0,
   }
   
   getWeather = async (e?: any) => {
@@ -43,7 +49,6 @@ export default class App extends React.Component<any,IState> {
     }
     
     const data = await api_call.json();
-
     const res = data.list.map((el:any) => ({
       date: moment(el.dt_txt).format('l LT'),
       description: el.weather[0].description,
@@ -71,7 +76,9 @@ export default class App extends React.Component<any,IState> {
           temperature: 0,
           pressure: 0,
           humidity: 0
-        }]
+        }],
+        lat: data.city.coord.lat,
+        lon: data.city.coord.lon
       });
     }
   }
@@ -81,13 +88,37 @@ export default class App extends React.Component<any,IState> {
       loading: false,
     })
   }
+  particleOpt:any = {
+    particles: {
+      number: {
+        value: 10,
+      },
+      size:{
+        value:15,
+      }
+   },
+   interactivity: {
+    events: {
+        onhover: {
+            enable: true,
+            mode: "repulse"
+        }
+    }
+  }
+}
+
   public render(){
     return (
       <div>
+        {/* <Particles
+                params={this.particleOpt}
+             /> */}
         <Container className="mainWrapper">
           <Row className="justify-content-center align-items-start">
             <Col xl={{span:3}}>
               <Form getWeather={this.getWeather}/>
+              
+                <Map/>
             </Col>
             <Col xl={{span:9}}>
                 <Weather allData={this.state.allData}/>
