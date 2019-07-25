@@ -69,8 +69,6 @@ export default class Chart extends React.Component<Props, any>{
     // }
   }
   draw(data:any) {
-    console.log(data, 'data');
-    console.log('oldDay',this.oldDay);
     if(this.oldDay !== data){
       let temp:any = []
       data.forEach((el:any) => {
@@ -86,16 +84,17 @@ export default class Chart extends React.Component<Props, any>{
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         data.forEach((el:any) => {
           ctx.font = "14px Courier";
-          ctx.fillStyle = 'rgb(0, 0, 0)';
+          ctx.fillStyle = 'rgba(0, 0, 0, .7)';
           ctx.fillText((moment(el.date).format("LT")),(data.indexOf(el)+0.37)*100, 270);
         })
         for(let i = 0;i<=Math.floor((Math.max(...temp))/5)+1;i++){
           ctx.font = "16px Courier"
-          ctx.fillStyle = 'rgb(0, 0, 0)';
+          ctx.fillStyle = 'rgba(0, 0, 0, .7)';
           ctx.fillText((i)*5, 0, 250-(i*25))
           ctx.beginPath();
           ctx.moveTo(0, 250-(i*25));
-          ctx.lineTo(1000, 250-(i*25));
+          ctx.lineTo(1000, 250-(i*25)); // (temp.length+0.4)*100
+          ctx.lineWidth = .1;
           ctx.closePath();
           ctx.stroke();
         }
